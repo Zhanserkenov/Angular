@@ -1,0 +1,65 @@
+.aboutus-section {
+  padding: 60px 0;
+  font-family: 'Roboto', sans-serif;
+  color: #333;
+  background-color: #f3efef;
+}
+
+.aboutus-title {
+  text-align: center;
+  font-size: 36px;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  position: relative;
+}
+
+.aboutus-title::after {
+  content: "";
+  display: block;
+  width: 90px;
+  height: 3px;
+  background-color: #fdb801;
+  margin: 10px auto 0;
+}
+
+.aboutus-text {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 40px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.features {
+  margin-bottom: 40px;
+}
+
+.feature-box {
+  text-align: center;
+  padding: 20px;
+}
+
+.feature-box .icon {
+  font-size: 40px;
+  color: #fdb801;
+  margin-bottom: 15px;
+}
+
+.contacts {
+  text-align: center;
+}
+
+.contacts ul {
+  list-style: none;
+  padding: 0;
+}
+
+.contacts ul li {
+  margin: 10px 0;
+  font-size: 16px;
+}
+
+.contacts ul li a {
+  color: #fdb801;
+  text-decoration: none;
+}
