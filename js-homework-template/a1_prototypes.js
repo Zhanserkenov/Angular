@@ -42,7 +42,7 @@ function runA1() {
 
     // TODO(f): Prototype chain — link Square.prototype -> Rectangle.prototype
     //          and restore Square.prototype.constructor.
-     Square.prototype = Object.create(Shape.prototype);
+     Square.prototype = Object.create(Rectangle.prototype);
      Square.prototype.constructor = Square;
 
     // TODO(g): Override describe() on Square.prototype. Call the parent
