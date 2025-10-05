@@ -1,0 +1,13 @@
+<div class="container">
+  <button (click)="loadMovies()">🎬 Load Movies</button>
+
+  @if (isLoaded) {
+    <ul>
+      <li *ngFor="let movie of movies">
+        <h3>{{ movie.title }} ({{ movie.release_date }})</h3>
+        <p><strong>Director:</strong> {{ movie.director }}</p>
+        <p class="desc">{{ movie.description }}</p>
+      </li>
+    </ul>
+  }
+</div>
