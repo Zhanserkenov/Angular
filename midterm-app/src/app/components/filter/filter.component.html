@@ -1,0 +1,54 @@
+<div class="filter-container">
+  <div class="filter-section">
+    <h3>Filters</h3>
+
+    <div class="filter-group">
+      <label for="genre-select">Genre:</label>
+      <select
+        id="genre-select"
+        [(ngModel)]="selectedGenre"
+        (change)="onGenreChange()"
+        class="filter-select">
+        <option [ngValue]="null">All Genres</option>
+        <option
+          *ngFor="let genre of genres"
+          [ngValue]="genre.id">
+          {{ genre.name }}
+        </option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label for="rating-slider">Minimum Rating: {{ minRating }}/10</label>
+      <input
+        type="range"
+        id="rating-slider"
+        [(ngModel)]="minRating"
+        (input)="onRatingChange()"
+        min="0"
+        max="10"
+        step="0.5"
+        class="filter-slider">
+    </div>
+
+    <div class="filter-group">
+      <label for="sort-select">Sort by:</label>
+      <select
+        id="sort-select"
+        [(ngModel)]="sortBy"
+        (change)="onSortChange()"
+        class="filter-select">
+        <option value="default">Default</option>
+        <option value="release_date">Release Date</option>
+        <option value="vote_average">Rating</option>
+      </select>
+    </div>
+
+    <button
+      type="button"
+      (click)="onResetFilters()"
+      class="reset-button">
+      Reset Filters
+    </button>
+  </div>
+</div>

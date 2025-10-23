@@ -1,0 +1,38 @@
+<div class="movie-card" (click)="onMovieClick()">
+  <div class="movie-poster">
+    <ng-container *ngIf="movie?.Poster && movie.Poster !== 'N/A'; else noPoster">
+      <img
+        [src]="movie.Poster"
+        [alt]="movie?.Title || 'Poster'"
+        class="poster-image">
+    </ng-container>
+
+    <ng-template #noPoster>
+      <div class="poster-placeholder">
+        {{ movie?.Title || 'No poster' }}
+      </div>
+    </ng-template>
+
+    <div class="movie-overlay">
+      <div class="movie-rating" *ngIf="movie?.imdbRating">
+        <span class="rating-stars">{{ getStarRating(movie.imdbRating) }}</span>
+        <span class="rating-number">{{ movie.imdbRating }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="movie-info">
+    <h3 class="movie-title">{{ movie?.Title || 'Untitled' }}</h3>
+    <p class="movie-release">{{ movie?.Year || 'Unknown year' }}</p>
+
+    <p class="movie-overview">
+      {{ (movie?.Plot || movie?.Type || 'No description') | slice:0:100 }}
+      {{ (movie?.Plot || '').length > 100 ? '...' : '' }}
+    </p>
+
+    <div class="movie-stats">
+      <span class="popularity">Genre: {{ movie?.Genre || 'Unknown' }}</span>
+      <span class="votes">Type: {{ movie?.Type || 'Unknown' }}</span>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,20 @@
+<div class="search-container">
+  <div class="search-input-wrapper">
+    <input
+      type="text"
+      [formControl]="searchControl"
+      placeholder="Search movies..."
+      class="search-input">
+    <button
+      type="button"
+      (click)="onClearSearch()"
+      class="clear-button"
+      [disabled]="!searchControl.value">
+      ✕
+    </button>
+  </div>
+  <div class="search-hint">
+    <small>Type to search movies by title or description</small>
+  </div>
+</div>
+

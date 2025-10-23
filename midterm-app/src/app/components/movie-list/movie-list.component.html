@@ -1,0 +1,65 @@
+<div class="movie-list-container">
+  <app-search (searchTermChange)="onSearchTermChange($event)"></app-search>
+  <app-filter (filterChange)="onFilterChange($event)"></app-filter>
+
+  <div *ngIf="loading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Loading movies...</p>
+  </div>
+
+  <div *ngIf="!loading">
+    <div *ngIf="(movies?.length ?? 0) > 0; else noResults" class="movies-grid">
+      <app-movie-card
+        *ngFor="let movie of movies; trackBy: trackByMovieId"
+        [movie]="movie"
+        (movieSelected)="onMovieSelected($event)">
+      </app-movie-card>
+    </div>
+  </div>
+
+  <ng-template #noResults>
+    <p class="no-results">No movies found. Try another search.</p>
+  </ng-template>
+
+  <div *ngIf="selectedMovie" class="modal-overlay" (click)="onCloseDetails()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <button class="close-button" (click)="onCloseDetails()">×</button>
+
+      <div class="movie-details">
+        <img
+          *ngIf="selectedMovie?.Poster && selectedMovie.Poster !== 'N/A'; else noPoster"
+          [src]="selectedMovie.Poster"
+          [alt]="selectedMovie.Title || 'Poster'"
+          class="details-poster-image">
+
+        <ng-template #noPoster>
+          <div class="details-poster-placeholder">No poster</div>
+        </ng-template>
+
+        <div class="movie-details-info">
+          <h2>{{ selectedMovie?.Title || 'Untitled' }}</h2>
+          <p class="release-date">{{ selectedMovie?.Year || 'Unknown year' }}</p>
+
+          <div class="rating">
+            <span class="rating-stars">{{ getStarRating(selectedMovie?.imdbRating) }}</span>
+            <span class="rating-number">{{ selectedMovie?.imdbRating ?? 'N/A' }}</span>
+            <span *ngIf="loadingDetails" class="loading-small">Loading details...</span>
+          </div>
+
+          <p class="overview">
+            {{ selectedMovie?.Plot ? (selectedMovie.Plot | slice:0:400) : (selectedMovie?.Type || 'No description available.') }}
+            {{ selectedMovie?.Plot?.length > 400 ? '...' : '' }}
+          </p>
+
+          <div class="movie-stats">
+            <div><strong>Genre:</strong> {{ selectedMovie?.Genre || 'Unknown' }}</div>
+            <div><strong>Director:</strong> {{ selectedMovie?.Director || 'N/A' }}</div>
+            <div><strong>Actors:</strong> {{ selectedMovie?.Actors || 'N/A' }}</div>
+            <div><strong>Runtime:</strong> {{ selectedMovie?.Runtime || 'N/A' }}</div>
+            <div><strong>Language:</strong> {{ selectedMovie?.Language || 'N/A' }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
