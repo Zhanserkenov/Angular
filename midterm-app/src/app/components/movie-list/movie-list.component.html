@@ -10,7 +10,7 @@
   <div *ngIf="!loading">
     <div *ngIf="(movies?.length ?? 0) > 0; else noResults" class="movies-grid">
       <app-movie-card
-        *ngFor="let movie of movies; trackBy: trackByMovieId"
+        *ngFor="let movie of movies;"
         [movie]="movie"
         (movieSelected)="onMovieSelected($event)">
       </app-movie-card>
@@ -43,20 +43,14 @@
           <div class="rating">
             <span class="rating-stars">{{ getStarRating(selectedMovie?.imdbRating) }}</span>
             <span class="rating-number">{{ selectedMovie?.imdbRating ?? 'N/A' }}</span>
-            <span *ngIf="loadingDetails" class="loading-small">Loading details...</span>
           </div>
 
           <p class="overview">
-            {{ selectedMovie?.Plot ? (selectedMovie.Plot | slice:0:400) : (selectedMovie?.Type || 'No description available.') }}
-            {{ selectedMovie?.Plot?.length > 400 ? '...' : '' }}
+            {{ selectedMovie?.Plot || 'No description available.' }}
           </p>
 
           <div class="movie-stats">
             <div><strong>Genre:</strong> {{ selectedMovie?.Genre || 'Unknown' }}</div>
-            <div><strong>Director:</strong> {{ selectedMovie?.Director || 'N/A' }}</div>
-            <div><strong>Actors:</strong> {{ selectedMovie?.Actors || 'N/A' }}</div>
-            <div><strong>Runtime:</strong> {{ selectedMovie?.Runtime || 'N/A' }}</div>
-            <div><strong>Language:</strong> {{ selectedMovie?.Language || 'N/A' }}</div>
           </div>
         </div>
       </div>
