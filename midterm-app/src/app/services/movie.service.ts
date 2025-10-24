@@ -9,7 +9,7 @@ export class MovieService {
 
   constructor(private http: HttpClient) {}
 
-  getMovies(searchTerm: string = 'movie'): Observable<any> {
+  getMovies(searchTerm: string = ''): Observable<any> {
     const url = searchTerm.trim()
       ? `${this.BASE_URL}/search/movie?api_key=${this.API_KEY}&query=${encodeURIComponent(searchTerm)}&page=1`
       : `${this.BASE_URL}/movie/popular?api_key=${this.API_KEY}&page=1`;
@@ -17,10 +17,6 @@ export class MovieService {
     return this.http.get<any>(url);
   }
 
-  getMovieById(id: string): Observable<any> {
-    const url = `${this.BASE_URL}/movie/${id}?api_key=${this.API_KEY}&append_to_response=credits`;
-    return this.http.get<any>(url);
-  }
 
   getGenres(): Observable<any> {
     const url = `${this.BASE_URL}/genre/movie/list?api_key=${this.API_KEY}`;
