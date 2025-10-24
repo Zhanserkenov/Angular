@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Subject, takeUntil, from, mergeMap, toArray } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { MovieService } from '../../services/movie.service';
 import { MovieCardComponent } from '../movie-card/movie-card.component';
 import { SearchComponent } from '../search/search.component';
@@ -20,8 +20,6 @@ export class MovieListComponent implements OnInit, OnDestroy {
 
   loading = false;
   selectedMovie: any = null;
-  loadingDetails = false;
-  private loadingDetailsForId: string | null = null;
   private destroy$ = new Subject<void>();
 
   currentFilters: any = { selectedGenre: null, minRating: 0, sortBy: 'default' };
@@ -42,32 +40,11 @@ export class MovieListComponent implements OnInit, OnDestroy {
 
   onMovieSelected(movie: any): void {
     this.selectedMovie = { ...movie };
-    if (movie?.Director && movie.Director !== 'N/A') return;
-    if (!movie?.imdbID) return;
-    if (this.loadingDetails && this.loadingDetailsForId === movie.imdbID) return;
-
-    this.loadingDetails = true;
-    this.loadingDetailsForId = movie.imdbID;
-
-    this.movieService.getMovieById(movie.imdbID)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(tmdbDetails => {
-        const details = this.mapTMDBDetails(tmdbDetails);
-        this.selectedMovie = { ...this.selectedMovie, ...details };
-        this.mergeDetailsIntoLists(movie.imdbID, details);
-        this.loadingDetails = false;
-        this.loadingDetailsForId = null;
-      });
   }
 
-  onCloseDetails(): void { this.selectedMovie = null; this.loadingDetails = false; this.loadingDetailsForId = null; }
-
-  private mergeDetailsIntoLists(imdbID: string, details: any) {
-    this.allMovies = this.allMovies.map(m => m.imdbID === imdbID ? { ...m, ...details } : m);
-    this.movies = this.movies.map(m => m.imdbID === imdbID ? { ...m, ...details } : m);
+  onCloseDetails(): void {
+    this.selectedMovie = null;
   }
-
-  trackByMovieId(_: number, movie: any): string { return movie?.imdbID ?? String(_); }
 
   private toNumber(v: any): number {
     const n = parseFloat(String(v ?? '0'));
@@ -87,7 +64,7 @@ export class MovieListComponent implements OnInit, OnDestroy {
     return '★'.repeat(stars) + '☆'.repeat(5 - stars);
   }
 
-  loadMovies(searchTerm: string = 'movie'): void {
+  loadMovies(searchTerm: string = ''): void {
     this.loading = true;
     this.allMovies = [];
     this.movies = [];
@@ -147,32 +124,7 @@ export class MovieListComponent implements OnInit, OnDestroy {
       Poster: tmdb.poster_path ? `https://image.tmdb.org/t/p/w500${tmdb.poster_path}` : 'N/A',
       Genre: genreNames,
       Type: 'movie',
-      Runtime: 'N/A',
-      Director: 'N/A',
-      Actors: 'N/A',
-      Language: 'N/A'
     };
   }
 
-  private mapTMDBDetails(tmdb: any): any {
-    const director = tmdb.credits?.crew?.find((p: any) => p.job === 'Director')?.name || 'N/A';
-    const actors = (tmdb.credits?.cast || []).slice(0, 5).map((a: any) => a.name).join(', ') || 'N/A';
-    const genres = (tmdb.genres || []).map((g: any) => g.name).join(', ') || 'N/A';
-    const languages = (tmdb.spoken_languages || []).map((l: any) => l.name).join(', ') || 'N/A';
-
-    return {
-      imdbID: String(tmdb.id),
-      Title: tmdb.title,
-      Year: tmdb.release_date ? tmdb.release_date.split('-')[0] : 'N/A',
-      imdbRating: Number((tmdb.vote_average ?? 0).toFixed(1)),
-      Plot: tmdb.overview || 'No description available',
-      Poster: tmdb.poster_path ? `https://image.tmdb.org/t/p/w500${tmdb.poster_path}` : 'N/A',
-      Genre: genres,
-      Type: 'movie',
-      Runtime: tmdb.runtime ? `${tmdb.runtime} min` : 'N/A',
-      Director: director,
-      Actors: actors,
-      Language: languages
-    };
-  }
 }
