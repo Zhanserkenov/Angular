@@ -1,0 +1,19 @@
+.login-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 4rem 20px;
+  text-align: center;
+}
+
+.login-content h1 {
+  font-size: 2rem;
+  color: #1f2937;
+  margin-bottom: 1rem;
+}
+
+.login-content p {
+  font-size: 1.1rem;
+  color: #6b7280;
+}
+
+
