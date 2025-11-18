@@ -1,0 +1,26 @@
+<div class="profile-container">
+  <div class="profile-content">
+    <h1>Profile</h1>
+    <div *ngIf="currentUser$ | async as user; else loading" class="user-info">
+      <div class="info-item">
+        <label>Email:</label>
+        <span>{{ user.email }}</span>
+      </div>
+      <div class="info-item">
+        <label>User ID:</label>
+        <span>{{ user.uid }}</span>
+      </div>
+      <div class="info-item">
+        <label>Email Verified:</label>
+        <span>{{ user.emailVerified ? 'Yes' : 'No' }}</span>
+      </div>
+      <button (click)="logout()" class="btn-logout">Logout</button>
+    </div>
+    <ng-template #loading>
+      <div class="loading">
+        <p>Loading user information...</p>
+      </div>
+    </ng-template>
+  </div>
+</div>
+

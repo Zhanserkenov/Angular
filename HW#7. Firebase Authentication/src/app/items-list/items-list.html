@@ -1,0 +1,31 @@
+<div class="items-list-container">
+  <div class="search-section">
+    <input
+      type="text"
+      [(ngModel)]="searchQuery"
+      (input)="onSearchChange()"
+      placeholder="🔍 Search items..."
+      class="search-input"
+    />
+  </div>
+
+  @if (loading) {
+    <div class="loading">Loading items...</div>
+  }
+
+  @if (error) {
+    <div class="error">{{ error }}</div>
+  }
+
+  @if (!loading && !error) {
+    @if (items.length === 0) {
+      <div class="no-items">No items found. Try a different search term.</div>
+    } @else {
+      <div class="items-grid">
+        @for (item of items; track item.id) {
+          <app-item-card [item]="item"></app-item-card>
+        }
+      </div>
+    }
+  }
+</div>
