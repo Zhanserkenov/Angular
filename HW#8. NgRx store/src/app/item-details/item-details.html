@@ -1,0 +1,66 @@
+<div class="item-details-container">
+  <!-- loading -->
+  <div *ngIf="loading$ | async" class="loading">Loading item details...</div>
+
+  <!-- not found -->
+  <div *ngIf="notFound" class="not-found">
+    <h2>Item Not Found</h2>
+    <p>The item you're looking for doesn't exist.</p>
+    <button (click)="goBack()" class="back-button">Go Back</button>
+  </div>
+
+  <!-- error (other errors) -->
+  <div *ngIf="(error$ | async) as error" class="error" >
+    <!-- если notFound = true, этот блок не будет показан, потому что notFound обрабатывается выше -->
+    <p>{{ error }}</p>
+    <button (click)="goBack()" class="back-button">Go Back</button>
+  </div>
+
+  <!-- item details -->
+  <div *ngIf="(item$ | async) as item" class="item-details">
+    <button (click)="goBack()" class="back-button">← Back</button>
+
+    <div class="details-image-section">
+      <img [src]="item.thumbnail" [alt]="item.title" class="main-image" />
+
+      <div *ngIf="item.images && item.images.length > 0" class="image-gallery">
+        <img *ngFor="let image of item.images.slice(0,4)" [src]="image" [alt]="item.title" class="gallery-image" />
+      </div>
+    </div>
+
+    <div class="details-content">
+      <h1 class="details-title">{{ item.title }}</h1>
+      <div class="details-meta">
+        <span class="brand">Brand: {{ item.brand }}</span>
+        <span class="category">Category: {{ item.category }}</span>
+      </div>
+
+      <div class="details-rating">
+        <span class="rating-value">⭐ {{ item.rating }}</span>
+        <span class="stock">Stock: {{ item.stock }}</span>
+      </div>
+
+      <div class="details-price">
+        <span class="price">${{ item.price }}</span>
+        <span *ngIf="item.discountPercentage > 0" class="discount">Save {{ item.discountPercentage }}%</span>
+      </div>
+
+      <div class="details-description">
+        <h3>Description</h3>
+        <p>{{ item.description }}</p>
+      </div>
+
+      <div class="details-info">
+        <div class="info-item"><strong>Product ID:</strong> {{ item.id }}</div>
+        <div class="info-item"><strong>Available Stock:</strong> {{ item.stock }} units</div>
+        <div class="info-item"><strong>Brand:</strong> {{ item.brand }}</div>
+        <div class="info-item"><strong>Category:</strong> {{ item.category }}</div>
+        <div class="info-item"><strong>Rating:</strong> {{ item.rating }}/5</div>
+        <div class="info-item"><strong>Price:</strong> ${{ item.price }}</div>
+        <div *ngIf="item.discountPercentage > 0" class="info-item">
+          <strong>Discount:</strong> {{ item.discountPercentage }}%
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
